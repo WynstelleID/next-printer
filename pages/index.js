@@ -1,131 +1,95 @@
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function Home() {
+const PrintButton = () => {
+  const [message, setMessage] = useState("");
+  const [messageAPI, setMessageAPI] = useState("");
+  const [_msg, setMsg] = useState("");
+
+  // useEffect(() => {
+  //   fetch("/api/print")
+  //     .then((response) => response.json())
+  //     .then((data) => setMessageAPI(data.message))
+  //     .catch((error) => console.error("Error fetching data:", error));
+  // }, []);
+
+  const handlePrint = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/", {
+        message: _msg,
+      });
+
+      if (response.status === 200) {
+        console.log("Print request sent successfully!");
+      } else {
+        console.error("Failed to send print request.");
+      }
+    } catch (error) {
+      console.error("Error sending print request:", error);
+    }
+  };
+
+  const handlePrintInside = async () => {
+    try {
+      const response = await axios.post("/api/print", {
+        message: message,
+      });
+
+      if (response.status === 200) {
+        console.log("Print request sent successfully!");
+      } else {
+        console.error("Failed to send print request.");
+      }
+    } catch (error) {
+      console.error("Error sending print request:", error);
+    }
+  };
+
+  useEffect(() => {
+    setMsg(
+      "[L]\n" +
+        "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
+        "[L]\n" +
+        "[C]================================\n" +
+        "[L]\n" +
+        "[L]<b>BEAUTIFUL SHIRT</b>[R]9.99e\n" +
+        "[L]  + Size : S\n" +
+        "[L]\n" +
+        "[L]<b>AWESOME HAT</b>[R]24.99e\n" +
+        "[L]  + Size : 57/58\n" +
+        "[L]\n" +
+        "[C]--------------------------------\n" +
+        "[R]TOTAL PRICE :[R]34.98e\n" +
+        "[R]TAX :[R]4.23e\n" +
+        "[L]\n" +
+        "[C]================================\n" +
+        "[L]\n" +
+        "[L]<font size='tall'>Customer :</font>\n" +
+        "[L]Raymond DUPONT\n" +
+        "[L]5 rue des girafes\n" +
+        "[L]31547 PERPETES\n" +
+        "[L]Tel : +33801201456\n" +
+        "[L]\n" +
+        "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
+        "[C]<qrcode size='20'>https://dantsu.com/</qrcode>"
+    );
+  }, []);
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel" className={styles.logo} />
-        </a>
-      </footer>
-
-      <style jsx>{`
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        footer img {
-          margin-left: 0.5rem;
-        }
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-decoration: none;
-          color: inherit;
-        }
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family:
-            Menlo,
-            Monaco,
-            Lucida Console,
-            Liberation Mono,
-            DejaVu Sans Mono,
-            Bitstream Vera Sans Mono,
-            Courier New,
-            monospace;
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            Segoe UI,
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            Fira Sans,
-            Droid Sans,
-            Helvetica Neue,
-            sans-serif;
-        }
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
+    <div>
+      <h1>Print to Thermal Printer</h1>
+      {/* <p>Message from API: {messageAPI}</p> */}
+      {/* <input
+        type="text"
+        placeholder="Enter message"
+        value={_msg}
+        onChange={(e) => setMessage(e.target.value)}
+      /> */}
+      <button type="button" onClick={handlePrint}>
+        Print
+      </button>
     </div>
   );
-}
+};
+
+export default PrintButton;
