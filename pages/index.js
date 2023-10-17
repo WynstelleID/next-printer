@@ -48,7 +48,7 @@ const PrintButton = () => {
   useEffect(() => {
     setMsg(
       "[L]\n" +
-        "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
+        "[C]<u><font size='big'>CEK TOKO SEBELAH</font></u>\n" +
         "[L]\n" +
         "[C]================================\n" +
         "[L]\n" +
